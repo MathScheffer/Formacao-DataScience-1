@@ -1,0 +1,67 @@
+
+Diretorios
+```{r}
+#pega o diretório atual de trabalho
+getwd()
+
+#seta um diretório padrão para o bloco atual
+setwd('')
+
+```
+
+```{r}
+plot(iris[,1:4])
+class(iris)
+```
+Salvar um objeto em um arquivo
+
+```{r}
+getwd()
+setwd('estudos/Formacao-datascience/pratica-em-r/aspectos-diversos')
+iristeste = iris
+save(iristeste,file="iristeste.Rdata")
+```
+
+Remove da memória o objeto
+```{r}
+rm(iristeste)
+iristeste
+```
+
+
+Carrega um objeto salvo
+```{r}
+setwd('estudos/Formacao-datascience/pratica-em-r/aspectos-diversos')
+load("iristeste.Rdata")
+
+iristeste
+```
+
+
+Vetores e gráficos Simples
+
+```{r}
+x = c(12,34,56,79)
+y = c(1,6,9,14)
+plot(x,y)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

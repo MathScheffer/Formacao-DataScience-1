@@ -1,0 +1,42 @@
+Programação 
+
+Estrutura condicional
+```{r}
+a = 2
+b = 3
+#if / else
+if(a>b){
+  print("Maior")
+}else{
+  print("Menor")
+}
+
+#"ternário"
+ifelse(a>b, print("Maior"), print("Menor"))
+```
+Laços de repetição
+```{r}
+# 0:10 é intervalo que ele irá imprimir
+for(i in 0:10){
+  print(i)
+}
+
+a = 1
+while(a <= 10){
+  print(a)
+  a = a+1
+}
+```
+Funções
+
+```{r}
+parOuImpar <- function(a){
+  return(ifelse(a%%2==0,"Par","Impar"))
+}
+
+parOuImpar(2)
+
+```
+
+
+

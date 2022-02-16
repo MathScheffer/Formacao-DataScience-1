@@ -1,0 +1,237 @@
+importa dados
+```{r}
+# Strings vazias como NA (equivale ao nulo); String como fatores(dado categórico de coluna x valor)
+dados = read.csv("Churn.csv", sep = ";", na.strings = "", stringsAsFactors = T)
+head(dados)
+summary(dados)
+```
+
+
+Tratar as Colunas
+```{r}
+colnames(dados) = c("id","Score","Estado","Genero","Idade","Patrimonio","Saldo","Produtos","PossuiCartaoCredito","Ativo","Salario","Saiu")
+
+dados
+head(dados,4)#[c(1,3,2),c(1,3,2)]
+
+```
+
+Análise exploratória - Conhecer um conjunto de dados e suas caracteristicas e identificar possíveis problemas e soluções para cada um
+
+```{r}
+#Dados categóricos
+countsEstado = table(dados$Estado)
+#com o primeiro barplot, verificamos que há 3 valores dominantes (PR,RS e SC), dois valores não pertencentes ao domínimo(RP e TD) e um (SP) que há discrepancia. Possívelmente, estes 3 últimos valores são erros!
+barplot(countsEstado, main = "Estados", xlab = "estados")
+
+countsGenero = table(dados$Genero)
+
+#Já aqui, nós podemos observar dados com diferentes nomes mas que representam a mesma coisa!
+barplot(countsGenero, main="Genero", xlab = "genero")
+
+```
+
+Explorar Colunas numéricas
+```{r}
+score = dados$Score
+score
+summary(score)
+boxplot(score)
+hist(score)
+```
+
+Idades
+
+```{r}
+idade = dados$Idade
+#Primeira observação: Valor -20 foge da nossa regra de domínimo;
+#Segunda observação: valor 140 pode ou não ser uma anomalia
+#Terceira observação: do primeiro quartil até o terceiro, podemos notar que os dados não estão muito distantes, dando a entender que os dados estão bem distribuidos
+summary(idade)
+idade
+boxplot(idade)
+hist(idade)
+```
+
+
+Saldo
+```{r}
+saldo = dados$Saldo
+saldo
+summary(saldo)
+boxplot(saldo)
+hist(saldo)
+```
+
+
+Salario
+```{r}
+salario = dados$Salario
+salario
+summary(salario)
+boxplot(salario)
+hist(salario)
+```
+
+
+
+Valores incompletos (numéricos)
+
+Para dados numéricos, geralmente utilizamos a mediana para fazer o tratamento. Já dados categóricos, os dados mais frequentes.
+```{r}
+#Trás somente as colunas que possuem um dado faltante/não reconhecido
+dados[!complete.cases(dados),]
+
+#Tratar salários - categóricos 
+salario = dados$Salario
+summary(salario)
+#Para ver a mediana onde há NA'S, devemos indicar para o R que desejamos remover as ocorrências deste datatype. Caso contrário, a mediana será NA!
+median(salario, na.rm = T)
+
+#Para substituirmos as incidências NA's pela mediana, primeiro, usamos a seguinte função:
+is.na(salario)
+#Aqui, ela percorre pelos dados do dataframe informado e retorna TRUE caso o valor for NA!
+
+#A seguir, pegamos a lista de todas as linhas de dados$salario que são NA, retornamos para nossa lista e atribuímos para os campos Salario a mediana de toda a coluna!
+dados[is.na(salario),]$Salario = median(salario, na.rm = T)
+is.na(dados$Salario)
+
+```
+Falta de padronização de Gênero (Dados categóricos)
+Aqui, temos o problema em que o mesmo dado é contabilizado.
+Para isto, escolhemos o padrão que aparece com maior frequência para ser nosso padrão e atribuímos o padrão às ocorrências dos dados de mesma semântica mas de forma diferente.
+Para dados NA's, atribuímos àquele que se encaixa na nossa Moda.
+```{r}
+genero = dados$Genero
+#Ver os valores armazenados
+unique(genero)
+
+#Ver a frequencia dos dados
+summary(genero)
+
+#
+#transformo os dados de "M" ou NA em  "Masculino"(nossa moda)
+dados[is.na(genero) | genero == "M" , ]$Genero = "Masculino"
+
+dados[genero == "F" | genero == "Fem" , ]$Genero = "Feminino"
+
+#Função factor retorna somente os valores existentes
+dados$Genero = factor(dados$Genero)
+summary(genero)
+```
+Idades fora de domínimo (numérico)
+
+```{r}
+idade = dados$Idade
+summary(idade)
+
+#verificamos se há valores NA's:
+dados[is.na(idade),]
+
+#Fora do domínio, numérico negativo e excessivamente grande
+dados[idade < 0 | idade > 110 , ]$Idade
+
+#Uma vez que estamos tratando dados numéricos, substituímos os dados invalidos pela mediana dos dados!
+dados[idade < 0 | idade > 110 , ]$Idade = median(idade)
+#Por fim, pesquisados se ainda há dados fora de domínimo
+dados[idade < 0 | idade > 110 , ]
+
+#Consultando o sumário, podemos notar que a Mediana não sofreu alteração com o nosso tratamento
+summary(dados$Idade)
+#
+
+```
+Dados duplicados
+
+Podemos ter dados duplicados em nossa carga, por exemplo, pessoas com a mesma idade, peso, altura, entre outras coisas.
+O Dado Duplicado pode se tornar um problema quando há regras de negócio que não permitem esta ocorrência. Um exemplo claro, é um Identificador Único duplicado!
+
+```{r}
+id = dados$Id
+#A função duplicated() retorna T quando já houve a ocorrência do dado iterado!
+x = dados[duplicated(id),]
+x =  dados[duplicated(dados$Id),]
+x
+
+#Verifico as linhas duplicadas
+dados[dados$Id %in% c(x$Id),]
+
+#Atribuo todos os dados que não são duplicados
+dados = dados[!dados$Id %in% c(x$Id),]
+
+#Verifico se as modificações foram feitas
+dados[dados$Id %in% c(x$Id),]
+
+#Verifico novamente se há dados duplicados
+x =  dados[duplicated(dados$Id),]
+x
+
+
+```
+Estados fora de Domínio (categóricos)
+
+```{r}
+estados = dados$Estado
+#Reparo na existencia dos dados RP e TD, fora de domínio
+summary(estados)
+
+#retorno os valores que não fazem parte do domínio e os transformos no dado da moda (RS)
+dados[!estados %in%c("PR","RS","SC","SP"),]$Estado = "RS"
+
+#Verifico se não há os levels fora de domínio com a função factor
+summary(factor(dados$Estado))
+```
+Outliers
+
+Para tratar os Outliers, devemos estabelecer regras de negócio. A usada no exemplo diz:
+Se o salário > 2*Desvio padrão, é um outlier!
+
+```{r}
+salario = dados$Salario
+#Verificamos que o salário está fora de padrão
+barplot(salario,main = "Salario",xlab = "salario")
+
+#Aplicamos  a regra:
+desv =  sd(salario, na.rm = T)
+solucao = dados[salario >= 2 *desv , ]$Salario
+solucao[!is.na(solucao)]
+
+#Forma alternativa:
+
+boxplot(dados$Salario)
+#Removendo as outlines, vemos que a média fica muito mais distribuida:
+boxplot(dados$Salario, outline = F)
+
+#Pego somente os valores outliers
+x = boxplot(salario)$out
+x
+mediana = median(salario, na.rm = T)
+median(dados$Salario)
+
+#Atualizamos todos os outliers(e NA's) para a mediana:
+dados[dados$Salario >= 2*desv , ]$Salario = median(dados$Salario)
+
+dados[dados$Salario >= 2 *desv  , ]$Salario
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

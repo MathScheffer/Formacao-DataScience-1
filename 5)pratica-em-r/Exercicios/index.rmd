@@ -1,0 +1,56 @@
+
+```{r}
+Ana = 8
+Paulo = 12
+
+ifelse(Ana > Paulo, "A menina é mais velha","O menino é mais velho!")
+```
+```{r}
+
+BOD
+```
+
+
+```{r}
+vetor = c(1:10). 
+
+imprimePar = function(a){
+  return(ifelse(a%%2==0,a,"Numero nao eh par"))
+}
+
+tamanho = 1
+while(tamanho <= length(vetor)){
+  print(imprimePar(vetor[tamanho]))
+  tamanho = tamanho+1
+}
+
+```
+```{r}
+colLength = dim(women)[1]
+colLength 
+women[colLength-10:colLength ,]
+```
+
+```{r}
+iris
+li = iris[50:100,]
+plot(li$Sepal.Width,li$Petal.Length)
+```
+
+```{r}
+vet1 = c(1,2,3,4)
+vet2 = c(3,2,4,1)
+l = length(vet1)
+d = 0
+for(i in 1:l){
+  d = d+(vet1[i]+vet2[i])
+  print(d)
+}
+d
+```
+```{r}
+colnames(CO2)
+rownames(CO2)
+dim(CO2)
+```
+

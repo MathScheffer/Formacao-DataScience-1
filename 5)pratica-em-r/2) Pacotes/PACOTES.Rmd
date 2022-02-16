@@ -1,0 +1,20 @@
+Instala e carrega o pacote
+```{r}
+
+#install.packages("e1071")
+library(e1071)
+```
+
+Descarrega e desinstala o pacote
+
+```{r}
+detach("e1071",unload = T)
+remove.packages("e1071")
+```
+
+
+
+
+
+
+

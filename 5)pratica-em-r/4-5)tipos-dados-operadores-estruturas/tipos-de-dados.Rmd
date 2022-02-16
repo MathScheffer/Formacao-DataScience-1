@@ -1,0 +1,130 @@
+Numerico (real)
+```{r}
+delta = 8.1
+class(delta)
+```
+
+Inteiro
+```{r}
+delta = 8L
+delta
+class(delta)
+```
+Caractere
+```{r}
+string = "Texto"
+class(string)
+```
+Lógico
+```{r}
+verdadeiro = TRUE
+falso = F
+class(verdadeiro)
+class(falso)
+```
+
+Operações matemáticas
+```{r}
+a = 2
+b = 5
+(a + b) * 2
+```
+
+Comparações - testes lógicos
+```{r}
+a == b
+b > a
+a < b
+a != b
+```
+Raiz Quadrada
+U
+```{r}
+sqrt(2500)
+```
+Vetores - Os dados devem ser do MESMO tipo
+```{r}
+vetor = c(1,2,3)
+vetor
+vetor[1]
+vetor[2] = 12
+vetor
+
+vetorString = c("a","b","c")
+vetorString
+
+class(vetor)
+class(vetorString)
+```
+Matrizes
+
+```{r}
+VADeaths
+colnames(VADeaths)
+rownames(VADeaths)
+```
+
+Acessos 
+```{r}
+#Seleciona os dados por coluna
+VADeaths[,1]
+#seleciona os dados por linha
+VADeaths[1,]
+#trago do item 2 até o item 3 da coluna 1
+VADeaths[2:3]
+#retorno itens específicos da coluna 1
+VADeaths[c(1,3,5)]
+#retorno itens específicos de todas as colunas
+VADeaths[c(1,3,5),]
+#retorno itens específicos de colunas específicas
+VADeaths[c(1,3,5),2:3]
+VADeaths[c(1,3,5),c(1,3)]
+```
+
+Dataframes
+
+```{r}
+longley
+#acesso igual aos da matriz:
+longley[c(1,3,5),2:3]
+#Podemos acessar por nome da coluna:
+longley["GNP"]
+#pego a coluna e a retorno como um vetor
+longley$Unemployed
+```
+
+
+Listas - vetores que suportam multiplos datatypes
+
+```{r}
+ability.cov
+#Acessando elementos dentro de uma lista:
+ability.cov$center
+ability.cov$n.obs
+ability.cov$cov
+```
+Fatores - Um vetor que trabalha com "level" de variáveis
+
+```{r}
+sexo <- c("Masculino", "Masculino", "Feminino", "Masculino", "Masculino", "Feminino", "Feminino","Outro")
+sexo
+fator_sexo = as.factor(sexo)
+fator_sexo
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

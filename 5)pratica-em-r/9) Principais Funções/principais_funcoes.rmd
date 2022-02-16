@@ -1,0 +1,45 @@
+Head e Tail
+
+```{r}
+esoph
+#pega as linhas de cima pra baixo
+head(esoph,2)
+#pega as linhas de baixo pra cima
+tail(esoph,2)
+```
+
+Dimensões (linhas - colunas)
+```{r}
+#Retorna um vetor com a primeira posição = linhas e a segunda = colunas
+dim(esoph) #equivale ao dataset.shape do Python
+```
+Tamanho
+```{r}
+islands
+length(islands)
+```
+Colunas
+```{r}
+colnames(esoph)
+```
+
+Linhas
+```{r}
+rownames(esoph)
+```
+Resumo
+
+```{r}
+esoph
+summary(esoph)
+#No caso de ser uma coluna categórica, mostra as ocorrências de cada elemento
+summary(esoph['agegp'])
+#No caso de ser uma coluna é numérica, retorna os quartis e o Min. e Max. valores
+summary(esoph['ncases'])
+```
+Abre uma caixa de diálogo para selecionarmos um arquivo, e retorna o caminho do arquivo
+```{r}
+file.choose()
+```
+
+

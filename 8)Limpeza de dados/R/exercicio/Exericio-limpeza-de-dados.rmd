@@ -1,0 +1,115 @@
+Tratar dados 'tempo.csv'
+Aparência: sol, nublado, chuva
+Temperatura: -130 ~ 130 F
+Umidade: 0 ~ 100
+Jogar: sim/nao
+Tratar valores NA
+
+```{r}
+dados = read.csv("tempo.csv", sep = ";", na.strings = "", stringsAsFactors = T)
+dados
+head(dados)
+summary(dados)
+```
+Dados categóricos
+```{r}
+            ##Aparencia
+dados$Aparencia
+countAparencia = table(dados$Aparencia)
+countAparencia
+#Fora de domínio: menos
+barplot(countAparencia, main = "Aparencia", xlab = "aparencia")
+
+            ##Vento
+#Incidêncai de NA
+dados$Vento
+countVento = table(dados$Vento)
+barplot(countVento, main = "Vento", xlab = "vento")
+
+
+            ##Jogar
+#Coluna fora do domínio dos dados
+
+```
+
+
+
+Dados numéricos
+```{r}
+          ## Temperatura
+temp = dados$Temperatura
+temp
+barplot(temp)
+#Incidência de outlier
+
+        ## Umidade
+umid = dados$Umidade
+umid 
+barplot(umid)
+boxplot(umid)
+boxplot(umid, outline = F)
+plot(umid)
+#Incidência de outlier e NA's
+```
+
+TRATAMENTO DOS DADOS
+
+
+categóricos
+```{r}
+aparencia = dados$Aparencia
+summary(aparencia)
+#há valores iguais em chuva e sol, neste caso, pesquisar
+dados[aparencia == "menos",]$Aparencia = "sol"
+summary(dados$Aparencia)
+dados$Aparencia = factor(dados$Aparencia)
+summary(dados$Aparencia)
+
+vento = dados$Vento
+summary(vento)
+dados[is.na(vento),]$Vento = "FALSO"
+dados[is.na(vento),]$Vento
+```
+
+
+Numéricos - Verificar o domínio (olhar os dados no topo da página, onde "~" significa o intervalo dos dados permitidos,  Ex: 10~15 = de 10 à 15)
+```{r}
+ temp = dados$Temperatura
+temp
+barplot(temp)
+boxplot(temp)
+#Resolvendo problema OUtlier
+desv = sd(temp, na.rm = T)
+media = median(temp,na.rm = T)
+
+summary(temp)
+dados[temp >= 2*desv,]$Temperatura #= media
+dados[temp < -130 | temp > 130]$Temperatura = media
+dados
+
+
+#Resolvendo problmea do outlier - necessário definir uma regra!
+
+```
+
+Umidade: 0 ~ 100
+```{r}
+umid = dados$Umidade
+umid
+#Resolvendo problema NA
+median(umid, na.rm = T)
+summary(umid)
+
+media = median(umid, na.rm = T)
+dados[is.na(umid),]$Umidade = media
+dados[umid < 0 | umid < 100 , ]$Umidade = media
+
+summary(dados$Umidade)
+```
+
+
+
+
+
+
+

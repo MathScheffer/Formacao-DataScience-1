@@ -1,0 +1,90 @@
+---
+Histograma: Bom para visualizar a distribuição dos dados.Mostrar intervalos em que mostra a maior e menor frequencia dos dados
+---
+
+```{r}
+trees
+hist(trees$Height)
+hist(trees$Height, main = "Arvores", ylab = "Frequencia", xlab = "Altura", col="blue")
+#density define um estilo para as barras
+#ps.: Breaks define mais quebra entre os intervalos, fazendo com que os intervalos sejam mais "refinados"
+hist(trees$Height, main = "Arvores", ylab = "Frequencia", xlab = "Altura", col="blue", density = 20, breaks = 20)
+```
+Uma segunda opção, seria coletar a densidade dos dados e realizar um "plot" destes, gerando um gráfico "suave", mas muito semelhante ao primeiro gráfico acima:
+```{r}
+densidade = density(trees$Height)
+plot(densidade)
+```
+
+É possível realizar a sobreposição de gráficos com a função "par":
+```{r}
+#ctr+shift+enter
+hist(trees$Height, main = NULL, xlab = NULL, ylab = NULL)
+par(new = T)
+plot(densidade)
+```
+
+---
+Dispersão: Usado para comparar variáveis contínuas
+---
+
+```{r}
+plot(trees$Girth, trees$Volume)
+#pch muda o tipo da representação dos dados
+plot(trees$Girth, trees$Volume, main = "Árvores", xlab="Volume", ylab = "Circunferencia", pch = 20, col = "blue")
+#type "l" faz o gráfico ser mostrado como uma linha
+plot(trees$Girth, trees$Volume, main = "Árvores", xlab="Volume", ylab = "Circunferencia", pch = 20, col = "blue", type = "l")
+
+```
+Tremulação: A função jitter faz com que os dados sobrepostos fiquem com um certo destaque, permitindo identificá-los em caso de sobreposição
+
+```{r}
+plot(jitter(trees$Girth), trees$Volume)
+```
+
+Legenda com dimensões categóricas
+
+```{r}
+CO2
+#ctrl+shift+enter
+plot(CO2$conc, CO2$uptake, pch = 20, col = CO2$Treatment)
+legend("bottomright", legend = c("nonchilled","chiled"), cex = 1, fill = c("black","red"))
+
+```
+
+Divisão de dados
+
+```{r}
+#ao passar um conjunto de dados numéricos, a função plot realiza uma matriz de gráficos
+plot(trees)
+```
+
+
+```{r}
+#divide a tela numa matrix de 2 por 2 (4 posições)
+split.screen(figs = c(2,2))
+#indica qual tela o próximo conteúdo irá aparecer
+screen(1)
+plot(trees$Girth,trees$Volume)
+screen(2)
+plot(trees$Girth,trees$Height)
+screen(3)
+plot(trees$Height,trees$Volume)
+screen(4)
+hist(trees$Volume)
+close.screen(all = T)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
